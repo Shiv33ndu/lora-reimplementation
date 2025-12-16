@@ -1,0 +1,22 @@
+# PyTorch for deep learning framework
+torch
+
+# Transformers library for accessing RoBERTa and GPT2 models
+transformers
+
+numpy
+
+matplotlib
+
+# for progress bar
+tqdm
+
+logging
+
+scikit-learn
+
+#pandas==1.5.3
+
+#tensorboard==2.13.0
+
+#wandb==0.15.12
