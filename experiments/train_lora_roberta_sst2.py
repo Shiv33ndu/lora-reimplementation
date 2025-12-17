@@ -4,7 +4,9 @@ import torch
 import torch.nn as nn
 from lora.patch_roberta import inject_lora_into_roberta, freeze_non_lora_params
 from torch.utils.data import DataLoader
+from torch.cuda.amp import autocast, GradScaler
 
+scaler = GradScaler()  # to speedup the Training on Kaggle
 
 dataset = load_dataset("glue", "sst2")
 
@@ -18,7 +20,7 @@ def tokenize_fn(batch):
         batch["sentence"],
         padding="max_length",
         truncation=True,
-        max_length=128
+        max_length=64  # to deal with OOM on kaggle environment
     )
 
 # tokenize the training and validation set
@@ -101,13 +103,15 @@ def train_epoch(model, loader):
         batch = {k: v.to(device) for k,v in batch.items()}
         optimizer.zero_grad()
 
-        out = model(**batch)
-        loss = out["loss"]
-
-        loss.backward()
-        optimizer.step()
-
-        total_loss += loss.item()
+        with autocast():
+            out = model(**batch)
+            loss = out["loss"]
+    
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
+    
+            total_loss += loss.item()
     
     return total_loss / len(loader)
 
