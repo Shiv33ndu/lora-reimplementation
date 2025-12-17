@@ -44,3 +44,23 @@ We only going to touch:
 - `layer.attention.self.value`
 
 Rest of the matrices update doesn't add up much into performance in downstream task adaptation.
+
+---
+
+## LoRA on RoBERTa-base (SSt-2) Training
+
+- Total Params : 124793088
+- Trainable Params : 147456 (0.12%)
+- Ranks (r) : 4
+- Alpha (α) : 16
+- Sequence Length: 64
+- AMP enabled
+
+
+| Epoch | Train Loss | Val Accuracy |
+|------|-----------|--------------|
+| 1 | 0.2850 | 93.12% |
+| 2 | 0.2162 | 93.00% |
+| 3 | 0.1985 | 92.66% |
+
+LoRA weights (A, B) and classifier head are saved and reusable.
