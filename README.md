@@ -64,3 +64,50 @@ Rest of the matrices update doesn't add up much into performance in downstream t
 | 3 | 0.1985 | 92.66% |
 
 LoRA weights (A, B) and classifier head are saved and reusable.
+
+
+---
+
+
+## Rank Ablation Study (LoRA on SST-2)
+
+To analyze the effect of LoRA rank \( r \) on downstream performance, we conduct a rank
+ablation study following the methodology discussed in Section 7.2 of the LoRA paper.
+
+The goal is to evaluate whether task-specific adaptation saturates at low rank, which would
+support the **low intrinsic dimension** hypothesis.
+
+<p align="center">
+  <img src="results/roberta_sst2_rank_ablation/rank_ablation.png" width="500"/>
+</p>
+
+### Experimental Setup
+- Base model: RoBERTa-base
+- Task: SST-2 (GLUE)
+- LoRA applied to: \( W_q \) and \( W_v \)
+- Ranks evaluated: \( r \in \{1, 2, 4, 8\} \)
+- α = 16, epochs = 3
+- Sequence length = 64, AMP enabled
+- Only LoRA parameters (A, B) and the classifier head are trainable
+
+### Results
+
+| Rank (r) | Validation Accuracy |
+|---------|---------------------|
+| 1 | 93.35% |
+| 2 | **93.69%** |
+| 4 | 92.89% |
+| 8 | 93.46% |
+
+### Observation
+
+- Even very small ranks (r = 1, 2) achieve strong performance.
+- Increasing rank beyond r ≈ 2–4 does not yield consistent improvements.
+- Performance remains within a narrow band (~0.9% absolute) across all ranks.
+
+The slight non-monotonic behavior is expected on small datasets such as SST-2 and can be
+attributed to training variance and noise rather than insufficient model capacity.
+
+Overall, these results indicate that effective task adaptation can be achieved using
+**low-rank updates**, consistent with the LoRA paper’s claim that most task-relevant updates
+lie in a low-dimensional subspace.

@@ -1,0 +1,8 @@
+{
+  "model": "roberta-base",
+  "task": "SST-2",
+  "r": 4,
+  "alpha": 16,
+  "epochs": 3,
+  "trainable_params": 148994
+}
