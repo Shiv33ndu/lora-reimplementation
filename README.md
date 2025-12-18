@@ -84,8 +84,8 @@ support the **low intrinsic dimension** hypothesis.
 ### Experimental Setup
 - Base model: RoBERTa-base
 - Task: SST-2 (GLUE)
-- LoRA applied to: \( W_q \) and \( W_v \)
-- Ranks evaluated: \( r \in \{1, 2, 4, 8\} \)
+- LoRA applied to: $W_q$  and $W_v$
+- Ranks evaluated: $r$ $\in$ ${1, 2, 4, 8\}$
 - α = 16, epochs = 3
 - Sequence length = 64, AMP enabled
 - Only LoRA parameters (A, B) and the classifier head are trainable
