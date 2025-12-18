@@ -71,7 +71,7 @@ LoRA weights (A, B) and classifier head are saved and reusable.
 
 ## Rank Ablation Study (LoRA on SST-2)
 
-To analyze the effect of LoRA rank \( r \) on downstream performance, we conduct a rank
+To analyze the effect of LoRA rank \( r \) on downstream performance, I conduct a rank
 ablation study following the methodology discussed in Section 7.2 of the LoRA paper.
 
 The goal is to evaluate whether task-specific adaptation saturates at low rank, which would
