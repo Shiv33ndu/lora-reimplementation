@@ -98,10 +98,11 @@ optimizer = torch.optim.AdamW(
 
 # Training loop epoch
 
-def train_epoch(model, loader):
+def train_epoch(model, loader, optimizer):
     model.train()
     total_loss = 0
-
+    optimizer = optimizer
+    
     for batch in loader:
         batch = {k: v.to(device) for k,v in batch.items()}
         optimizer.zero_grad()
