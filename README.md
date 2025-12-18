@@ -111,3 +111,41 @@ attributed to training variance and noise rather than insufficient model capacit
 Overall, these results indicate that effective task adaptation can be achieved using
 **low-rank updates**, consistent with the LoRA paper’s claim that most task-relevant updates
 lie in a low-dimensional subspace.
+
+---
+
+## Parameter Efficiency vs Rank
+
+One of the key advantages of LoRA is that the number of trainable parameters
+scales **linearly** with the chosen rank ($ r $).
+
+For RoBERTa-base (hidden size = 768, 12 layers) with LoRA applied to \( W_q \) and \( W_v \),
+the number of trainable parameters is:
+
+$$
+\text{Trainable Params} = 48 \times d \times r = 36{,}864 \times r
+$$
+
+The LoRA-specific parameter count scales linearly with rank as:
+Trainable LoRA Params ≈ 36,864 × r
+
+An additional ~1.5k parameters come from the task-specific classification head.
+
+### Trainable Parameters by Rank (LoRA + Classifier Head)
+
+| Rank (r) | Trainable Parameters | % of Total Params |
+|---------|----------------------|------------------|
+| 1 | 38,402 | 0.031% |
+| 2 | 75,266 | 0.060% |
+| 4 | 148,994 | 0.119% |
+| 8 | 296,450 | 0.237% |
+
+*Note: In above Table Trainable parameters include both LoRA adaptation matrices (A, B) and the task-specific classification head.*
+
+Despite increasing the rank by **8×**, the fraction of trainable parameters
+remains well below **0.3%** of the full model size.
+
+Combined with the rank ablation results, this highlights that strong downstream
+performance can be achieved with **extremely small parameter updates**, reinforcing
+the low intrinsic dimension hypothesis behind LoRA.
+
