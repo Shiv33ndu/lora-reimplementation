@@ -1,5 +1,5 @@
 import torch
-from inference.load_model import load_lora_roberta
+from utils.load_model import load_lora_roberta
 from experiments.train_lora_roberta_sst2 import get_tokenizer
 
 id2label = {

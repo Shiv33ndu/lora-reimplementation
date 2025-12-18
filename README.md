@@ -149,3 +149,22 @@ Combined with the rank ablation results, this highlights that strong downstream
 performance can be achieved with **extremely small parameter updates**, reinforcing
 the low intrinsic dimension hypothesis behind LoRA.
 
+---
+
+## LoRA Weight Merging for Inference
+
+After training, the low-rank LoRA updates can be merged into the frozen base
+weights to eliminate any inference-time overhead.
+
+For a LoRA-adapted linear layer:
+
+W_eff = W₀ + (α / r) · B · A
+
+This merge is performed once, after which the model behaves as a standard
+Transformer without additional parameters or computation.
+
+All LoRA weights are merged prior to inference, resulting in:
+- zero added latency
+- no extra memory usage
+- identical outputs compared to the unmerged LoRA model
+

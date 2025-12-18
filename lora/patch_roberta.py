@@ -46,14 +46,14 @@ def freeze_non_lora_params(model):
 
 
 
-model = RobertaModel.from_pretrained("roberta-base")
-model = inject_lora_into_roberta(model, r=4, alpha=16)
-freeze_non_lora_params(model)
+# model = RobertaModel.from_pretrained("roberta-base")
+# model = inject_lora_into_roberta(model, r=4, alpha=16)
+# freeze_non_lora_params(model)
 
-trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
-total = sum(p.numel() for p in model.parameters())
+# trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+# total = sum(p.numel() for p in model.parameters())
 
-print(f"Base Model : RoBERTa-base")
-print(f"Traiable params: {trainable}")
-print(f"Total params: {total}")
-print(f"Percentage: {100 * trainable / total:.4f}%")
+# print(f"Base Model : RoBERTa-base")
+# print(f"Traiable params: {trainable}")
+# print(f"Total params: {total}")
+# print(f"Percentage: {100 * trainable / total:.4f}%")

@@ -86,8 +86,9 @@ class LoRALinear(nn.Module):
         result = x @ self.weight.T
 
         # LoRA update 
-        lora_update = (x @ self.A.T) @ self.B.T
-        result = result + self.scaling * lora_update
+        if self.r > 0:
+            lora_update = (x @ self.A.T) @ self.B.T
+            result = result + self.scaling * lora_update
 
         if self.bias is not None:
             result += self.bias
@@ -95,12 +96,34 @@ class LoRALinear(nn.Module):
         return result
 
 
+    def merge(self):
+        """
+        Merge LoRA weights (BA) into the frozen base weight.
+        After merge, the layer behaves as a standard nn.Linear.
+        """
 
-layer = LoRALinear(10, 5, r=4, alpha=16)
-x = torch.randn(2,10)
+        if self.r > 0:
+            # computing ΔW = (alpha / r) * B @ A
+            delta_w = self.scaling * (self.B @ self.A)
 
-y1 = layer(x)
+            # merge back to original weight
+            self.weight.data += delta_w
 
-# check only A and B are trainable 
-for name, p in layer.named_parameters():
-    print(name, p.requires_grad)
+            # once the merge is done, we dont need B & A
+            self.A.requires_grad = False 
+            self.B.requires_grad = False 
+
+            # purge LoRA weights to save memory
+            del self.A
+            del self.B
+
+            self.r = 0
+
+# layer = LoRALinear(10, 5, r=4, alpha=16)
+# x = torch.randn(2,10)
+
+# y1 = layer(x)
+
+# # check only A and B are trainable 
+# for name, p in layer.named_parameters():
+#     print(name, p.requires_grad)
