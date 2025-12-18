@@ -13,7 +13,10 @@ dataset = load_dataset("glue", "sst2")
 train_ds = dataset["train"]
 val_ds = dataset["validation"]
 
-tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
+def get_tokenizer():
+    return RobertaTokenizer.from_pretrained("roberta-base")
+
+tokenizer = get_tokenizer()
 
 def tokenize_fn(batch):
     return tokenizer(
@@ -138,14 +141,15 @@ def evaluate(model, loader):
 #                Training
 # ========================================
 
-EPOCHS = 3
+if __name__ == "__main__":
+    EPOCHS = 3
 
-for epoch in range(EPOCHS):
-    train_loss = train_epoch(model, train_loader)
-    val_acc = evaluate(model, val_loader)
+    for epoch in range(EPOCHS):
+        train_loss = train_epoch(model, train_loader)
+        val_acc = evaluate(model, val_loader)
 
-    print(
-        f"Epoch {epoch+1} | "
-        f"Train Loss: {train_loss:.4f} | "
-        f"Val Acc: {val_acc:.4f} | "
-    )
+        print(
+            f"Epoch {epoch+1} | "
+            f"Train Loss: {train_loss:.4f} | "
+            f"Val Acc: {val_acc:.4f} | "
+        )
