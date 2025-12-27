@@ -168,3 +168,23 @@ All LoRA weights are merged prior to inference, resulting in:
 - no extra memory usage
 - identical outputs compared to the unmerged LoRA model
 
+
+## Testing
+
+Unit tests focus on LoRA-specific invariants:
+- zero-init equivalence
+- merge correctness
+- parameter freezing
+- correct injection points
+
+To keep CI fast and deterministic, tests use lightweight dummy transformer
+modules instead of downloading pretrained models.
+
+
+## 🧪 How to run tests
+
+```python
+pip install pytest
+pytest -s tests/
+``` 
+
