@@ -118,12 +118,4 @@ class LoRALinear(nn.Module):
             del self.B
 
             self.r = 0
-
-# layer = LoRALinear(10, 5, r=4, alpha=16)
-# x = torch.randn(2,10)
-
-# y1 = layer(x)
-
-# # check only A and B are trainable 
-# for name, p in layer.named_parameters():
-#     print(name, p.requires_grad)
+        
