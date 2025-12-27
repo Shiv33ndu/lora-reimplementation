@@ -2,7 +2,7 @@ from datasets import load_dataset
 from transformers import RobertaTokenizer, RobertaModel
 import torch
 import torch.nn as nn
-from lora.patch_roberta import inject_lora_into_roberta, freeze_non_lora_params
+from inject_lora.patch_roberta import inject_lora_into_roberta, freeze_non_lora_params
 from torch.utils.data import DataLoader
 from torch.cuda.amp import autocast, GradScaler
 
