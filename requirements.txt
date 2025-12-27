@@ -22,3 +22,6 @@ datasets
 #tensorboard==2.13.0
 
 #wandb==0.15.12
+
+# for testing
+pytest
