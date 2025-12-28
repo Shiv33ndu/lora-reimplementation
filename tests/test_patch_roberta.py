@@ -1,11 +1,5 @@
 from tests.utils import DummyRoberta
-from inject_lora.patch_roberta import inject_lora_into_roberta, freeze_non_lora_params
-
-
-# freeze_non_lora_params(model)
-
-
-
+from tests.utils import inject_lora_into_attention_stack, freeze_non_lora_params_test
 
 
 def count_parameters(model):
@@ -27,8 +21,9 @@ def test_roberta_lora_injection():
 
     # for testing purpose rely on DummyRoberta Model, it approximates same parameter count
     model = DummyRoberta(num_layers=12, hidden_size=768)
-    model = inject_lora_into_roberta(model, r=4, alpha=16)
-    freeze_non_lora_params(model)
+    model = inject_lora_into_attention_stack(model, r=4, alpha=16)
+    freeze_non_lora_params_test(model)
+    
 
     total_params = count_parameters(model)
 
